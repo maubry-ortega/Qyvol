@@ -4,7 +4,7 @@ members = [
     "cli",
     "runtime",
     "common"
-]
+, "core"]
 exclude = [
     "hello"  # Excluye el directorio hello del workspace
 ]

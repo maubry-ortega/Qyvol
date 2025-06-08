@@ -10,4 +10,5 @@ serde_yaml = "0.9"
 colored = "2"
 runtime = { path = "../runtime" }
 common = { path = "../common" }
+qyvol-core = { path = "../core" }
 

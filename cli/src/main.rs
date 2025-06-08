@@ -2,7 +2,7 @@
 use clap::Parser;
 use colored::*;
 use std::path::Path;
-use runtime::run_wasm;
+use runtime::executor::run_wasm;
 use common::Manifest;
 
 /// CLI de Qyvol
@@ -26,16 +26,12 @@ fn main() {
         Commands::Run { path } => {
             println!("{}", "▶ Ejecutando Qyvol Runtime...".green());
 
-            // Usa la API del módulo common
             match Manifest::from_file(Path::new(&path)) {
-                Ok((manifest, manifest_dir)) => {
-                    run_wasm(&manifest, &manifest_dir); // ✅ ¡Ahora con ambos argumentos!
-                }
-                Err(e) => {
-                    println!("❌ Error al leer el manifiesto: {}", e);
-                }
+                Ok((manifest, manifest_dir)) => run_wasm(&manifest, &manifest_dir),
+                Err(e) => println!("❌ Error al leer el manifiesto: {}", e),
             }
         }
     }
 }
+
 

@@ -7,3 +7,4 @@ edition = "2024"
 wasmtime = "15.0"
 wasmtime-wasi = "15.0"
 common = { path = "../common" }
+qyvol-core = { path = "../core" }
