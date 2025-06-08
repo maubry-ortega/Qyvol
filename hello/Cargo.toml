@@ -1,0 +1,13 @@
+[package]
+name = "hello"
+version = "0.1.0"
+edition = "2021" # o "2024"
+
+[dependencies]
+# No se necesitan dependencias adicionales para WASI básico
+
+[profile.release]
+opt-level = "z" # Minimizar tamaño
+strip = true
+lto = true
+

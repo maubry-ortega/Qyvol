@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = [
+    "cli",
+    "runtime",
+    "common"
+]
+exclude = [
+    "hello"  # Excluye el directorio hello del workspace
+]
+

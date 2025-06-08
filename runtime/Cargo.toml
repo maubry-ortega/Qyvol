@@ -1,0 +1,9 @@
+[package]
+name = "runtime"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+wasmtime = "15.0"
+wasmtime-wasi = "15.0"
+common = { path = "../common" }

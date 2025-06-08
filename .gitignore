@@ -1,0 +1,55 @@
+# ----------------------------------------
+# 💡 Archivos y carpetas de compilación
+# ----------------------------------------
+/target/
+**/target/
+
+# ----------------------------------------
+# ⚙️ Archivos generados por Cargo
+# ----------------------------------------
+**/*.rs.bk
+Cargo.lock
+
+# ⚠️ Cargo.lock puede incluirse en proyectos binarios pero se suele ignorar en workspaces o librerías. 
+# Puedes comentar la línea de arriba si decides incluirlo.
+
+# ----------------------------------------
+# 🧪 Archivos de pruebas temporales
+# ----------------------------------------
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+
+# ----------------------------------------
+# 👾 Archivos específicos del entorno de desarrollo
+# ----------------------------------------
+.idea/              # JetBrains IDEs (CLion, IntelliJ, RustRover)
+.vscode/            # VS Code configs
+*.code-workspace
+*.DS_Store          # macOS
+Thumbs.db           # Windows
+ehthumbs.db
+*.iml
+
+# ----------------------------------------
+# 🧪 Archivos generados por Qyvol (ej. builds locales)
+/examples/*.wasm
+*.qyv.d.ts
+*.qyv.js
+*.qyv.map
+
+# ----------------------------------------
+# 🧪 Archivos del sistema de ejecución (si usas logs o dumps)
+/logs/
+dump.*
+core.*
+*.core
+
+# ----------------------------------------
+# 🧠 Cache del compilador o herramientas
+/.cache/
+.cargo/
+/target/
+
