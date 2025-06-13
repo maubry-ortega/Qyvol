@@ -1,7 +1,7 @@
 # Qyvol 🚀
 
 <div align="center">
-  <img src="assets/axis.png" alt="Mascota Axi" width="150" style="margin-right: 20px;"/>
+  <img src="assets/axi.png" alt="Mascota Axi" width="150" style="margin-right: 20px;"/>
   <img src="assets/qyvol-logo.png" alt="Logo Qyvol" width="150"/>
 </div>
 
@@ -26,47 +26,44 @@ Qyvol/
 
 ---
 
-## ✨ Primer Ejemplo: Clasificador de Imágenes con IA
+## ✨ Primer Ejemplo: Hello World
 
-Ejecuta un clasificador de imágenes basado en IA definido por un manifiesto `.qyv`:
+Ejecuta un módulo "Hello World" definido por un manifiesto `.qyv` ya probado:
 
 ```sh
-cargo run -p cli -- run examples/classifier.qyv
+cargo run -p cli -- run examples/hello.qyv
 ```
 
 ### ✅ Salida Esperada
 
 ```
 ▶ Iniciando Qyvol Runtime...
-🔧 Cargando módulo: imagenet-classifier
-📂 Ruta WASM: examples/./model.wasm
-📋 Lenguaje: Julia
+🔧 Cargando módulo: hello-qyvol
+📂 Ruta WASM: examples/./hello.wasm
+📋 Lenguaje: Rust
 📋 Importaciones:
   - wasi_snapshot_preview1::fd_write
-  - ai::inference
+  - ...
 📋 Exportaciones:
   - memory
   - _start
-  - classify
-🔍 Permisos: fs:read-only, net:false, ai:true
-🧠 Ejecutando inferencia en /data/sample.jpg...
-✅ Clasificación: "Gato" (confianza: 0.92)
+  - __main_void
+🔍 Permisos: fs:none, net:false, exec:false
+👋 ¡Hola desde Qyvol WASI!
 ✅ Ejecución completada
 ```
 
 ### 📄 Ejemplo de Manifiesto `.qyv`
 
 ```yaml
-name: imagenet-classifier
-entrypoint: model.wasm
+name: hello-qyvol
+entrypoint: hello.wasm
 runtime: wasi
-language: julia
+language: rust
 permissions:
-  fs: read-only
+  fs: none
   net: false
-  ai: true
-env:
-  MODEL_PATH: /data/imagenet.onnx
+  exec: false
 fs:
   type: memfs
 ```
@@ -79,7 +76,7 @@ fs:
 - **Integración de IA**: Ejecuta modelos de IA embebidos (ONNX, TFLite) con Julia, tract, linfa o burn para clasificación, predicción y optimización.
 - **Seguridad Basada en Capacidades**: Permisos declarativos en `.qyv` garantizan ejecución con confianza cero.
 - **Sistema de Archivos Modular**: Soporte para `memfs` (RAM), `diskfs` (WASI host) y `netfs` (HTTP/WebDAV/S3).
-- **Redes Virtuales**: Comunicación interna via `service://nombre/puerto` con `tokio::mpsc` y sincronización P2P usando libp2p/WebRTC.
+- **Redes Virtuales**: Comunicación interna vía `service://nombre/puerto` con `tokio::mpsc` y sincronización P2P usando libp2p/WebRTC.
 - **Shell Predictivo**: CLI potenciada por IA (`qyvol shell`) con sugerencias contextuales.
 - **Clustering Distribuido**: Orquesta instancias de Qyvol con Elixir para sincronización en edge y nube.
 - **Soporte para GUI**: Ejecuta aplicaciones gráficas con Kotlin Multiplatform, Dioxus o egui, renderizadas vía WebGPU.
@@ -137,7 +134,7 @@ type: gui
 - Ejecución de módulos `.wasm` con WASI
 - Visualización de importaciones/exportaciones de módulos
 - CLI básica (`qyvol run`)
-- Ejemplos funcionales (e.g., `hello.wasm`, `classifier.wasm`)
+- Ejemplos funcionales (e.g., `hello.wasm`)
 
 🧠 **Próximos Pasos**:
 

@@ -11,4 +11,5 @@ colored = "2"
 runtime = { path = "../runtime" }
 common = { path = "../common" }
 qyvol-core = { path = "../core" }
-
+rustyline = "10.0"
+thiserror = "1.0"

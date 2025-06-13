@@ -1,5 +1,7 @@
 name: hello-qyvol
-runtime: wasmtime
-entrypoint: ./hello.wasm
-
-
+entrypoint: hello.wasm
+runtime: wasi
+permissions:
+  fs: none
+  net: false
+  exec: false
