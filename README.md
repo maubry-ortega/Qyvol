@@ -28,10 +28,17 @@ Qyvol/
 
 ## ✨ Primer Ejemplo: Hello World
 
-Ejecuta un módulo "Hello World" definido por un manifiesto `.qyv` ya probado:
+Para ejecutar un módulo "Hello World" definido por un manifiesto `.qyv`, primero instala el CLI `qyvol`:
 
 ```sh
-cargo run -p cli -- run examples/hello.qyv
+cd cli
+cargo install --path . --bin qyv
+```
+
+Luego, ejecuta el ejemplo:
+
+```sh
+qyv run examples/hello.qyv
 ```
 
 ### ✅ Salida Esperada
@@ -66,6 +73,38 @@ permissions:
   exec: false
 fs:
   type: memfs
+```
+
+---
+
+## 🖥️ Shell Interactivo
+
+Qyvol incluye un shell interactivo para gestionar módulos y explorar el entorno. Inicia el shell con:
+
+```sh
+qyv shell
+```
+
+### Comandos Disponibles
+
+- `help`: Muestra la lista de comandos.
+- `exit`: Sale del shell.
+- `ls` o `dir`: Lista los archivos en el directorio actual (compatible con Linux/macOS y Windows).
+- `run <path>`: Ejecuta un módulo `.wasm` definido por un manifiesto `.qyv`.
+- `deploy <path> [target]`: Despliega un módulo `.wasm` a un objetivo remoto.
+- `cluster <action> [node]`: Gestiona un clúster de nodos Qyvol.
+- `shell`: Inicia un nuevo shell (anidado).
+
+Ejemplo de uso:
+
+```
+qyvol> ls
+examples  contrib  cli  common  runtime
+qyvol> run examples/hello.qyv
+▶ Iniciando Qyvol Runtime...
+...
+✅ Ejecución completada
+qyvol> exit
 ```
 
 ---
@@ -123,6 +162,7 @@ type: gui
 - [`tract-onnx`](https://crates.io/crates/tract-onnx) – Ejecución de modelos de IA
 - [`libp2p`](https://crates.io/crates/libp2p) – Redes P2P
 - [`ring`](https://crates.io/crates/ring) – Firmas criptográficas para `.qyvbin`
+- [`rustyline`](https://crates.io/crates/rustyline) – Shell interactivo
 
 ---
 
@@ -133,12 +173,12 @@ type: gui
 - Parseo de manifiestos `.qyv`
 - Ejecución de módulos `.wasm` con WASI
 - Visualización de importaciones/exportaciones de módulos
-- CLI básica (`qyvol run`)
+- CLI avanzada (`qyvol run`, `qyvol shell`)
 - Ejemplos funcionales (e.g., `hello.wasm`)
 
 🧠 **Próximos Pasos**:
 
-- CLI avanzada (`qyvol deploy`, `qyvol shell`, `qyvol cluster`)
+- CLI avanzada (`qyvol deploy`, `qyvol cluster`)
 - Soporte para contenedores `.qyvbin` con firmas digitales
 - Planificador basado en IA con Julia/linfa
 - Sistema de archivos modular (`memfs`, `diskfs`, `netfs`)

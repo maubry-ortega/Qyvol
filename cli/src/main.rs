@@ -37,9 +37,7 @@ enum Commands {
     Cluster { action: String, node: Option<String> },
 }
 
-fn main() -> Result<(), CliError> {
-    let cli = Cli::parse();
-
+pub fn main_with_cli(cli: Cli) -> Result<(), CliError> {
     match cli.command {
         Commands::Run { path } => {
             println!("{}", "▶ Ejecutando Qyvol Runtime...".green());
@@ -69,4 +67,9 @@ fn main() -> Result<(), CliError> {
             Ok(())
         }
     }
+}
+
+fn main() -> Result<(), CliError> {
+    let cli = Cli::parse();
+    main_with_cli(cli)
 }

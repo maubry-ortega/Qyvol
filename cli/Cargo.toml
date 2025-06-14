@@ -13,3 +13,7 @@ common = { path = "../common" }
 qyvol-core = { path = "../core" }
 rustyline = "10.0"
 thiserror = "1.0"
+
+[[bin]]
+name = "qyv"
+path = "src/main.rs"

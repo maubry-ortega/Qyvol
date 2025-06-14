@@ -1,3 +1,4 @@
+// # VolleyDevByMaubry [5/∞] "Un clúster une nodos como ideas en una revolución distribuida."
 use thiserror::Error;
 
 #[derive(Error, Debug)]
