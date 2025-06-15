@@ -5,9 +5,9 @@
   <img src="assets/qyvol-logo.png" alt="Logo Qyvol" width="150"/>
 </div>
 
-**Qyvol** es un runtime moderno basado en WebAssembly (WASM), diseñado para ejecutar microservicios y aplicaciones portátiles, seguras y potenciadas por IA con tiempos de arranque instantáneos. Inspirado en Docker, pero optimizado para WASM, Qyvol utiliza manifiestos `.qyv` y contenedores `.qyvbin` para orquestar módulos `.wasm`, ofreciendo una alternativa ligera a los contenedores tradicionales. Con soporte para una arquitectura poliglota (Rust, Julia, Kotlin, Nim), Qyvol es ideal para entornos edge, navegadores, servidores y dispositivos embebidos.
+**Qyvol** es un runtime moderno basado en WebAssembly (WASM), diseñado para ejecutar microservicios y aplicaciones portátiles, seguras y potenciadas por IA con tiempos de arranque instantáneos. Inspirado en Docker, pero optimizado para WASM, Qyvol utiliza manifiestos `.qyv` y contenedores `.qyvbin` para orquestar módulos `.wasm`, ofreciendo una alternativa ligera a los contenedores tradicionales. Con soporte para una arquitectura poliglota (Rust, Go, Julia, Kotlin, Nim), Qyvol es ideal para entornos edge, navegadores, servidores y dispositivos embebidos.
 
-> Ejecuta módulos `.wasm` definidos por manifiestos `.qyv` con WASI, potenciados por orquestación basada en IA, seguridad avanzada y sistemas de archivos modulares.
+> Ejecuta módulos `.wasm` definidos por manifiestos `.qyv` con WASI Preview 2, potenciados por orquestación basada en IA, seguridad avanzada y sistemas de archivos modulares.
 
 ---
 
@@ -17,36 +17,46 @@ El repositorio está organizado como un **workspace de Rust** con los siguientes
 
 ```
 Qyvol/
-├── cli/          # Interfaz de línea de comandos (qyvol run, deploy, shell)
-├── common/       # Estructuras compartidas (manifiestos, parser YAML, permisos)
-├── runtime/      # Runtime WASM con WASI, integración de IA y redes
-├── examples/     # Ejemplos de manifiestos (.qyv) y módulos (.wasm)
-└── contrib/      # Código fuente de ejemplo (Rust, Julia, Kotlin) para módulos .wasm
+├── cli/                 # Interfaz de línea de comandos (qyvol run, deploy, shell)
+├── common/              # Estructuras compartidas (manifiestos, parser YAML, permisos)
+├── runtime/             # Runtime WASM con WASI, integración de IA y redes
+├── ejemplos_funcionales/ # Ejemplos de manifiestos (.qyv) y código fuente (Rust, Go)
+└── contrib/             # Código fuente de ejemplo (Rust, Julia, Kotlin) para módulos .wasm
 ```
 
 ---
 
 ## ✨ Primer Ejemplo: Hello World
 
-Para ejecutar un módulo "Hello World" definido por un manifiesto `.qyv`, primero instala el CLI `qyvol`:
+Para ejecutar un módulo "Hello World" en Rust o Go, primero instala el CLI `qyvol`:
 
 ```sh
 cd cli
 cargo install --path . --bin qyv
 ```
 
-Luego, ejecuta el ejemplo:
+### Ejemplo en Rust
+
+Ejecuta el módulo Rust desde `ejemplos_funcionales/hello`:
 
 ```sh
-qyv run examples/hello.qyv
+qyv run ejemplos_funcionales/hello/hello.qyv
 ```
 
-### ✅ Salida Esperada
+### Ejemplo en Go
+
+Ejecuta el módulo Go desde `ejemplos_funcionales/ejemplo`:
+
+```sh
+qyv run ejemplos_funcionales/ejemplo/ejemplo.qyv
+```
+
+### ✅ Salida Esperada (Rust)
 
 ```
 ▶ Iniciando Qyvol Runtime...
 🔧 Cargando módulo: hello-qyvol
-📂 Ruta WASM: examples/./hello.wasm
+📂 Ruta WASM: ejemplos_funcionales/hello/hello.component.wasm
 📋 Lenguaje: Rust
 📋 Importaciones:
   - wasi_snapshot_preview1::fd_write
@@ -60,11 +70,11 @@ qyv run examples/hello.qyv
 ✅ Ejecución completada
 ```
 
-### 📄 Ejemplo de Manifiesto `.qyv`
+### 📄 Ejemplo de Manifiesto `.qyv` (Rust)
 
 ```yaml
 name: hello-qyvol
-entrypoint: hello.wasm
+entrypoint: hello.component.wasm
 runtime: wasi
 language: rust
 permissions:
@@ -99,8 +109,8 @@ Ejemplo de uso:
 
 ```
 qyvol> ls
-examples  contrib  cli  common  runtime
-qyvol> run examples/hello.qyv
+ejemplos_funcionales  contrib  cli  common  runtime
+qyvol> run ejemplos_funcionales/hello/hello.qyv
 ▶ Iniciando Qyvol Runtime...
 ...
 ✅ Ejecución completada
@@ -111,7 +121,7 @@ qyvol> exit
 
 ## 🌟 Características Principales
 
-- **Soporte Poliglota**: Ejecuta módulos `.wasm` compilados desde Rust, Julia, Kotlin, Nim y más.
+- **Soporte Poliglota**: Ejecuta módulos `.wasm` compilados desde Rust, Go, Julia, Kotlin, Nim y más.
 - **Integración de IA**: Ejecuta modelos de IA embebidos (ONNX, TFLite) con Julia, tract, linfa o burn para clasificación, predicción y optimización.
 - **Seguridad Basada en Capacidades**: Permisos declarativos en `.qyv` garantizan ejecución con confianza cero.
 - **Sistema de Archivos Modular**: Soporte para `memfs` (RAM), `diskfs` (WASI host) y `netfs` (HTTP/WebDAV/S3).
@@ -144,9 +154,13 @@ type: gui
 ## ⚙️ Requisitos
 
 - Rust (1.80+ recomendado)
-- Binarios `.wasm` compatibles con WASI
+- Binarios `.wasm` compatibles con WASI Preview 2
 - `cargo install cargo-edit` (para `cargo add`)
-- `wasmtime` o `wasmedge` (integrados en el runtime)
+- `wasmtime` (v25.0, integrado en el runtime)
+- TinyGo (para módulos Go)
+- Binaryen (para `wasm-opt`, requerido por TinyGo)
+- `wasm-tools` (para adaptar módulos Go a WASI P2)
+- Adaptador WASI (`wasi_snapshot_preview1.command.wasm` para Go)
 - Opcional: Julia (para módulos de IA), Kotlin (para GUI), Elixir (para clustering)
 
 ---
@@ -156,7 +170,7 @@ type: gui
 - [`serde`](https://crates.io/crates/serde), [`serde_yaml`](https://crates.io/crates/serde_yaml) – Parseo de YAML
 - [`clap`](https://crates.io/crates/clap) – Parseo de argumentos CLI
 - [`colored`](https://crates.io/crates/colored) – Salida colorida en terminal
-- [`wasmtime`](https://crates.io/crates/wasmtime) – Ejecución WASM con WASI
+- [`wasmtime`](https://crates.io/crates/wasmtime) – Ejecución WASM con WASI (v25.0)
 - [`tokio`](https://crates.io/crates/tokio) – Runtime asíncrono para redes
 - [`reqwest`](https://crates.io/crates/reqwest) – HTTP para `netfs`
 - [`tract-onnx`](https://crates.io/crates/tract-onnx) – Ejecución de modelos de IA
@@ -171,10 +185,11 @@ type: gui
 ✅ **Funcionalidades Implementadas**:
 
 - Parseo de manifiestos `.qyv`
-- Ejecución de módulos `.wasm` con WASI
+- Ejecución de módulos `.wasm` con WASI Preview 2 (Rust y Go)
 - Visualización de importaciones/exportaciones de módulos
 - CLI avanzada (`qyvol run`, `qyvol shell`)
-- Ejemplos funcionales (e.g., `hello.wasm`)
+- Executor modular (`runtime/src/executor/`)
+- Ejemplos funcionales en Rust y Go (`ejemplos_funcionales/`)
 
 🧠 **Próximos Pasos**:
 
@@ -187,6 +202,55 @@ type: gui
 - Clustering distribuido con Elixir
 - Dashboard web para monitoreo
 - QyvolHub para módulos `.wasm` públicos
+
+---
+
+## 🧪 Creando Módulos para Qyvol
+
+Qyvol utiliza el Modelo de Componentes de WebAssembly (WASI Preview 2). Los archivos `.wasm` deben ser componentes compatibles.
+
+### Módulos desde Rust
+
+1. Instala el target:
+
+   ```bash
+   rustup target add wasm32-wasip2
+   ```
+
+2. Compila el código:
+
+   ```bash
+   cd ejemplos_funcionales/hello
+   rustc src/main.rs --target wasm32-wasip2 -o hello.component.wasm
+   ```
+
+3. Ejecuta con Qyvol:
+   ```bash
+   qyv run hello.qyv
+   ```
+
+### Módulos desde Go
+
+1. Instala TinyGo, Binaryen, y `wasm-tools` (ver [Requisitos](#⚙️-requisitos)).
+2. Compila el código:
+
+   ```bash
+   cd ejemplos_funcionales/ejemplo
+   tinygo build -o main-go.wasm -target wasi .
+   ```
+
+3. Adapta a componente WASI P2:
+
+   ```bash
+   wasm-tools component new main-go.wasm -o ejemplo.component.wasm --adapt /ruta/a/wasi_snapshot_preview1.command.wasm
+   ```
+
+4. Ejecuta con Qyvol:
+   ```bash
+   qyv run ejemplo.qyv
+   ```
+
+Consulta `ejemplos_funcionales/hello/README.md` y `ejemplos_funcionales/ejemplo/README.md` para detalles completos.
 
 ---
 
@@ -211,6 +275,7 @@ type: gui
    - Soporte para GUI (Kotlin, Dioxus)
 
 4. **Fase 4: Ecosistema (3-5 meses)**
+
    - Repositorio público QyvolHub
    - Clustering distribuido con Elixir
    - Dashboard web y modo educativo
