@@ -2,12 +2,14 @@
 use clap::Parser;
 use colored::*;
 use std::path::Path;
-use runtime::executor::{run_wasm, deploy_wasm};
+use runtime::run_wasm;
+use runtime::deploy::{self, deploy_wasm};
 use common::Manifest;
 use thiserror::Error;
 mod shell;
 use self::shell::start_shell;
 use runtime::cluster::manage_cluster;
+use anyhow::Result;
 
 #[derive(Error, Debug)]
 pub enum CliError {
@@ -17,14 +19,18 @@ pub enum CliError {
     ExecutorError(String),
     #[error("Error al desplegar módulo: {0}")]
     DeployError(String),
+    #[error("Error en el Shell: {0}")]
+    ShellError(String),
+    #[error("Error en el clúster: {0}")]
+    ClusterError(String),
 }
 
 #[derive(Parser)]
 #[command(name = "qyvol")]
 #[command(about = "Ejecuta funciones .wasm en Qyvol Runtime", long_about = None)]
-struct Cli {
+pub struct Cli {
     #[arg(long, default_value = "text", global = true)]
-    format: String, // Formato de salida: text, json, yaml
+    format: String,
     #[command(subcommand)]
     command: Commands,
 }
@@ -37,39 +43,43 @@ enum Commands {
     Cluster { action: String, node: Option<String> },
 }
 
+// Función síncrona normal, sin `async`.
 pub fn main_with_cli(cli: Cli) -> Result<(), CliError> {
     match cli.command {
         Commands::Run { path } => {
             println!("{}", "▶ Ejecutando Qyvol Runtime...".green());
             let (manifest, manifest_dir) = Manifest::from_file(Path::new(&path))
                 .map_err(|e| CliError::ManifestError(e.to_string()))?;
+            
+            // Llama a la versión síncrona de `run_wasm`, sin `.await`.
             run_wasm(&manifest, &manifest_dir, &cli.format)
                 .map_err(|e| CliError::ExecutorError(e.to_string()))?;
-            Ok(())
         }
         Commands::Deploy { path, target } => {
             println!("{}", "▶ Desplegando módulo...".green());
             let (manifest, manifest_dir) = Manifest::from_file(Path::new(&path))
                 .map_err(|e| CliError::ManifestError(e.to_string()))?;
-            let target = target.unwrap_or("http://localhost:8080".to_string());
+            let target = target.unwrap_or_else(|| "http://localhost:8080".to_string());
+
+            // deploy_wasm debe ser síncrona también.
             deploy_wasm(&manifest, &manifest_dir, &target)
                 .map_err(|e| CliError::DeployError(e.to_string()))?;
-            Ok(())
         }
         Commands::Shell => {
             println!("{}", "▶ Iniciando Qyvol Shell...".green());
-            start_shell().map_err(|e| CliError::ExecutorError(e.to_string()))?;
-            Ok(())
+            start_shell().map_err(|e| CliError::ShellError(e.to_string()))?;
         }
         Commands::Cluster { action, node } => {
             println!("{}", "▶ Gestionando clúster...".green());
-            manage_cluster(&action, node).map_err(|e| CliError::ExecutorError(e.to_string()))?;
-            Ok(())
+            manage_cluster(&action, node).map_err(|e| CliError::ClusterError(e.to_string()))?;
         }
     }
+    Ok(())
 }
 
-fn main() -> Result<(), CliError> {
+// Función `main` síncrona, sin macros de Tokio.
+fn main() -> Result<()> {
     let cli = Cli::parse();
-    main_with_cli(cli)
+    main_with_cli(cli)?;
+    Ok(())
 }

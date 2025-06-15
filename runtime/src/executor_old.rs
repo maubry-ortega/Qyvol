@@ -10,6 +10,7 @@ use crate::printer;
 use reqwest::Client;
 use tokio::runtime::Runtime;
 use indicatif::{ProgressBar, ProgressStyle};
+use wasmtime_wasi::I32Exit;
 
 #[derive(Error, Debug)]
 pub enum ExecutorError {
@@ -25,6 +26,8 @@ pub enum ExecutorError {
     ProgressStyleError(String),
     #[error("Ejecución interrumpida por límite de tiempo")]
     ExecutionTimeout,
+    #[error("El módulo finalizó con código de salida {0}")]
+    ModuleExit(i32),
 }
 
 pub fn run_wasm(manifest: &Manifest, manifest_dir: &Path, format: &str) -> Result<(), ExecutorError> {
@@ -149,4 +152,26 @@ pub fn deploy_wasm(manifest: &Manifest, manifest_dir: &Path, target: &str) -> Re
     pb.finish_with_message("Despliegue completado");
     println!("✅ Despliegue completado a {}", target);
     Ok(())
+}
+
+let run_result = main.call(&mut store, ());
+
+match run_result { 
+    Ok(()) => {
+        // El programa “no” llamó a proc_exit: todo OK
+    }
+    Err(trap) => {
+        // ¿Fue un exit?
+        if let Some(exit) = trap.downcast_ref::<I32Exit>() {
+            if exit.0 == 0 {
+                // Exit 0 = éxito normal ➜ no es un error
+            } else {
+                return Err(ExecutorError::ModuleExit(exit.0));
+            }
+        } else if trap.to_string().contains("epoch") {
+            return Err(ExecutorError::ExecutionTimeout);
+        } else {
+            return Err(ExecutorError::ModuleLoad(trap.to_string()));
+        }
+    }
 }

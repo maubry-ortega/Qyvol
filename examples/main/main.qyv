@@ -1,0 +1,7 @@
+name: main-go
+entrypoint: main-go.component.wasm
+runtime: wasi
+permissions:
+  fs: none
+  net: false
+  exec: false
