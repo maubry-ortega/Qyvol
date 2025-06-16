@@ -38,11 +38,7 @@ impl SimpleTable {
         let headers: Vec<String> = headers.iter().map(|s| s.to_string()).collect();
         let column_widths = headers.iter().map(|h| h.len()).collect();
 
-        SimpleTable {
-            headers,
-            rows: Vec::new(),
-            column_widths,
-        }
+        SimpleTable { headers, rows: Vec::new(), column_widths }
     }
 
     pub fn add_row(&mut self, row: Vec<&str>) {
@@ -63,11 +59,7 @@ impl SimpleTable {
         }
 
         for (i, header) in self.headers.iter().enumerate() {
-            print!(
-                "{:<width$}",
-                header.bright_white().bold(),
-                width = self.column_widths[i]
-            );
+            print!("{:<width$}", header.bright_white().bold(), width = self.column_widths[i]);
             if i < self.headers.len() - 1 {
                 print!("  ");
             }
@@ -98,12 +90,7 @@ impl SimpleTable {
 
 pub fn print_list_item(icon: &str, title: &str, description: Option<&str>) {
     if let Some(desc) = description {
-        println!(
-            "{} {} - {}",
-            icon,
-            title.bright_white().bold(),
-            desc.dimmed()
-        );
+        println!("{} {} - {}", icon, title.bright_white().bold(), desc.dimmed());
     } else {
         println!("{} {}", icon, title.bright_white().bold());
     }
@@ -136,12 +123,7 @@ impl FileTree {
     }
 
     pub fn add_item(&mut self, name: &str, is_dir: bool, level: usize, is_last: bool) {
-        self.items.push(TreeItem {
-            name: name.to_string(),
-            is_dir,
-            level,
-            is_last,
-        });
+        self.items.push(TreeItem { name: name.to_string(), is_dir, level, is_last });
     }
 
     pub fn print(&self) {
@@ -158,18 +140,16 @@ impl FileTree {
 
             let icon = if item.is_dir {
                 "📁"
+            } else if item.name.ends_with(".qyv") {
+                "🦊"
+            } else if item.name.ends_with(".wasm") {
+                "📦"
+            } else if item.name.ends_with(".rs") {
+                "🦀"
+            } else if item.name.ends_with(".go") {
+                "🐹"
             } else {
-                if item.name.ends_with(".qyv") {
-                    "🦊"
-                } else if item.name.ends_with(".wasm") {
-                    "📦"
-                } else if item.name.ends_with(".rs") {
-                    "🦀"
-                } else if item.name.ends_with(".go") {
-                    "🐹"
-                } else {
-                    "📄"
-                }
+                "📄"
             };
 
             let name_colored = if item.is_dir {

@@ -1,17 +1,16 @@
 [package]
 name = "runtime"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
+license = "MIT"
 
 [dependencies]
-wasmtime = { version = "25.0.0", features = ["component-model"] }
-wasmtime-wasi = "25.0.0"
-
-common = { path = "../common" }
-qyvol-core = { path = "../core" }
+wasmtime = { version = "25.0.3", features = ["component-model"] }
+wasmtime-wasi = "25.0.3"
+common = { workspace = true }
 thiserror = "1.0"
 reqwest = { version = "0.11", features = ["json", "blocking"] }
-tokio = { version = "1.0", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.45", features = ["rt-multi-thread", "macros"] }
 indicatif = "0.17"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.9"

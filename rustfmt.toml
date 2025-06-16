@@ -1,0 +1,24 @@
+# Configuración extendida - verificar qué opciones funcionan en tu versión
+max_width = 100
+edition = "2021"
+hard_tabs = false
+tab_spaces = 4
+
+# Opciones que probablemente funcionen en stable reciente
+fn_params_layout = "Compressed"
+use_small_heuristics = "Max"
+reorder_imports = true
+remove_nested_parens = true
+merge_derives = true
+use_field_init_shorthand = true
+newline_style = "Unix"
+
+# Opciones que podrían funcionar dependiendo de tu versión de rustfmt
+# Si dan warning, comenta las líneas que fallan:
+
+# format_strings = true
+# normalize_comments = true
+# wrap_comments = true
+# comment_width = 80
+# group_imports = "StdExternalCrate"
+# reorder_impl_items = true

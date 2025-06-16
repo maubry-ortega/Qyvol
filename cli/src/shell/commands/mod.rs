@@ -18,10 +18,7 @@ impl CommandHandler {
     }
 
     pub fn execute(
-        &self,
-        command: &str,
-        args: &[&str],
-        context: &mut ShellContext,
+        &self, command: &str, args: &[&str], context: &mut ShellContext,
     ) -> Result<(), Box<dyn Error>> {
         match command {
             "run" | "r" => execute_run(args, context),
@@ -55,19 +52,13 @@ fn execute_run(args: &[&str], context: &ShellContext) -> Result<(), Box<dyn Erro
             context.current_dir.join(input_path),
             context.current_dir.join("examples").join(input_path),
             context.current_dir.join(input_path).with_extension("qyv"),
-            context
-                .current_dir
-                .join("examples")
-                .join(input_path)
-                .with_extension("qyv"),
+            context.current_dir.join("examples").join(input_path).with_extension("qyv"),
         ];
 
-        let found_path = possible_paths
+        possible_paths
             .into_iter()
             .find(|p| p.exists())
-            .ok_or_else(|| format!("Archivo no encontrado: {}", input_path))?;
-
-        found_path
+            .ok_or_else(|| format!("Archivo no encontrado: {}", input_path))?
     };
 
     let (manifest, manifest_dir) = Manifest::from_file(&path)?;
@@ -83,13 +74,7 @@ fn execute_ls(context: &ShellContext) -> Result<(), Box<dyn Error>> {
 
     print_step("Listando directorio actual...");
 
-    let mut table = SimpleTable::new(vec![
-        "Tipo",
-        "Nombre",
-        "Tamaño",
-        "Modificado",
-        "Descripción",
-    ]);
+    let mut table = SimpleTable::new(vec!["Tipo", "Nombre", "Tamaño", "Modificado", "Descripción"]);
 
     for entry in fs::read_dir(&context.current_dir)? {
         let entry = entry?;
@@ -126,10 +111,7 @@ fn execute_ls(context: &ShellContext) -> Result<(), Box<dyn Error>> {
         let modified = metadata
             .modified()
             .map(|t| {
-                let duration = SystemTime::now()
-                    .duration_since(t)
-                    .unwrap_or_default()
-                    .as_secs();
+                let duration = SystemTime::now().duration_since(t).unwrap_or_default().as_secs();
                 if duration < 3600 {
                     format!("{}m ago", duration / 60)
                 } else if duration < 86400 {
@@ -176,47 +158,23 @@ fn execute_help() -> Result<(), Box<dyn Error>> {
     print_separator();
     println!("📚 Comandos disponibles:");
 
-    print_help_command(
-        "run (r)",
-        "Ejecuta un módulo WASM",
-        Some("run <path-to-qyv>"),
-    );
+    print_help_command("run (r)", "Ejecuta un módulo WASM", Some("run <path-to-qyv>"));
     print_help_command("info (i)", "Muestra información del entorno", Some("info"));
-    print_help_command(
-        "scan (s)",
-        "Busca módulos WASM automáticamente",
-        Some("scan"),
-    );
+    print_help_command("scan (s)", "Busca módulos WASM automáticamente", Some("scan"));
     print_help_command(
         "template (t)",
         "Crea un nuevo proyecto",
         Some("template <lenguaje> <nombre>"),
     );
-    print_help_command(
-        "ls (l)",
-        "Lista archivos en el directorio actual",
-        Some("ls"),
-    );
+    print_help_command("ls (l)", "Lista archivos en el directorio actual", Some("ls"));
     print_help_command("dir", "Alias para ls", Some("dir"));
     print_help_command("help (h)", "Muestra esta ayuda", Some("help"));
     print_help_command("clear (c)", "Limpia la pantalla", Some("clear"));
     print_help_command("cls", "Alias para clear", Some("cls"));
-    print_help_command(
-        "cd (d)",
-        "Cambia el directorio actual",
-        Some("cd <directorio>"),
-    );
-    print_help_command(
-        "z",
-        "Navega rápidamente a directorios frecuentes",
-        Some("z <patrón>"),
-    );
+    print_help_command("cd (d)", "Cambia el directorio actual", Some("cd <directorio>"));
+    print_help_command("z", "Navega rápidamente a directorios frecuentes", Some("z <patrón>"));
     print_help_command("mkdir (m)", "Crea un directorio", Some("mkdir <nombre>"));
-    print_help_command(
-        "rm (x)",
-        "Elimina un archivo o directorio",
-        Some("rm <nombre>"),
-    );
+    print_help_command("rm (x)", "Elimina un archivo o directorio", Some("rm <nombre>"));
     print_help_command("edit (e)", "Edita un archivo", Some("edit <nombre>"));
     print_help_command("exit", "Sale del shell", Some("exit"));
 

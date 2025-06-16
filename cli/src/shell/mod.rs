@@ -27,10 +27,7 @@ impl Completer for QyvolHelper {
     type Candidate = rustyline::completion::Pair;
 
     fn complete(
-        &self,
-        line: &str,
-        _pos: usize,
-        ctx: &rustyline::Context<'_>,
+        &self, line: &str, _pos: usize, ctx: &rustyline::Context<'_>,
     ) -> rustyline::Result<(usize, Vec<Self::Candidate>)> {
         self.completer.complete(line, _pos, ctx)
     }
@@ -45,9 +42,7 @@ impl Hinter for QyvolHelper {
 
 impl Highlighter for QyvolHelper {
     fn highlight_prompt<'b, 's: 'b, 'p: 'b>(
-        &'s self,
-        prompt: &'p str,
-        default: bool,
+        &'s self, prompt: &'p str, default: bool,
     ) -> Cow<'b, str> {
         if default {
             Cow::Borrowed(prompt)
@@ -79,20 +74,12 @@ impl QyvolShell {
         let context = ShellContext::new()?;
         let prompt = QyvolPrompt::new(&context);
         let completer = QyvolCompleter::new();
-        let helper = QyvolHelper {
-            completer,
-            prompt: prompt.clone(),
-        };
+        let helper = QyvolHelper { completer, prompt: prompt.clone() };
         let mut editor = Editor::with_history(config, history)?;
         editor.set_helper(Some(helper));
         let command_handler = CommandHandler::new();
 
-        Ok(QyvolShell {
-            editor,
-            context,
-            prompt,
-            command_handler,
-        })
+        Ok(QyvolShell { editor, context, prompt, command_handler })
     }
 
     pub fn run(&mut self) -> Result<(), Box<dyn Error>> {
@@ -142,9 +129,7 @@ impl QyvolShell {
                 println!("{}", "¡Hasta luego! 👋".cyan());
                 std::process::exit(0);
             }
-            _ => self
-                .command_handler
-                .execute(command, &args[1..], &mut self.context),
+            _ => self.command_handler.execute(command, &args[1..], &mut self.context),
         }
     }
 

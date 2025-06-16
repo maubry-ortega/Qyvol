@@ -9,12 +9,10 @@ use common::Manifest;
 use std::path::Path;
 use wasmtime::component::Linker;
 use wasmtime::{Engine, Store};
-use wasmtime_wasi::{add_to_linker_sync, I32Exit};
+use wasmtime_wasi::{I32Exit, add_to_linker_sync};
 
 pub fn run_wasm(
-    manifest: &Manifest,
-    manifest_dir: &Path,
-    _format: &str,
+    manifest: &Manifest, manifest_dir: &Path, _format: &str,
 ) -> Result<(), ExecutorError> {
     let engine = Engine::default();
 

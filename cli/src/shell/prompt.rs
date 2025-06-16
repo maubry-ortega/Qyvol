@@ -13,11 +13,7 @@ pub struct QyvolPrompt {
 
 impl QyvolPrompt {
     pub fn new(_context: &ShellContext) -> Self {
-        QyvolPrompt {
-            show_git: true,
-            show_context: true,
-            show_stats: true,
-        }
+        QyvolPrompt { show_git: true, show_context: true, show_stats: true }
     }
 
     pub fn render(&self, context: &ShellContext) -> String {
@@ -30,11 +26,7 @@ impl QyvolPrompt {
         parts.push(path.bright_cyan().to_string());
 
         if self.show_context && context.project_type != ProjectType::Generic {
-            parts.push(
-                format!("[{}]", context.get_project_name())
-                    .bright_yellow()
-                    .to_string(),
-            );
+            parts.push(format!("[{}]", context.get_project_name()).bright_yellow().to_string());
         }
 
         if self.show_stats {
@@ -60,10 +52,7 @@ impl QyvolPrompt {
         let raw_bytes = rendered.as_bytes();
         let bytes = strip(raw_bytes);
 
-        match String::from_utf8(bytes) {
-            Ok(s) => s,
-            Err(_) => String::new(),
-        }
+        String::from_utf8(bytes).unwrap_or_default()
     }
 
     fn format_path(&self, path: &Path) -> String {
@@ -77,12 +66,8 @@ impl QyvolPrompt {
             if components.len() > 3 {
                 format!(
                     ".../{}/{}",
-                    components[components.len() - 2]
-                        .as_os_str()
-                        .to_string_lossy(),
-                    components[components.len() - 1]
-                        .as_os_str()
-                        .to_string_lossy()
+                    components[components.len() - 2].as_os_str().to_string_lossy(),
+                    components[components.len() - 1].as_os_str().to_string_lossy()
                 )
             } else {
                 path_str.to_string()

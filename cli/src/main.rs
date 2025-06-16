@@ -38,18 +38,10 @@ pub struct Cli {
 
 #[derive(clap::Subcommand)]
 enum Commands {
-    Run {
-        path: String,
-    },
-    Deploy {
-        path: String,
-        target: Option<String>,
-    },
+    Run { path: String },
+    Deploy { path: String, target: Option<String> },
     Shell,
-    Cluster {
-        action: String,
-        node: Option<String>,
-    },
+    Cluster { action: String, node: Option<String> },
 }
 
 pub fn main_with_cli(cli: Cli) -> Result<(), CliError> {

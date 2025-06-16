@@ -1,4 +1,8 @@
 [workspace]
-resolver = "2"
 members = ["cli", "runtime", "common", "core"]
 exclude = ["hello"]
+
+[workspace.dependencies]
+common = { path = "common" }
+runtime = { path = "runtime" }
+core = { path = "core" }

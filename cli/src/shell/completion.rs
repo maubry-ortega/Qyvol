@@ -15,10 +15,7 @@ impl QyvolCompleter {
                 ("r".to_string(), "Alias para run".to_string()),
                 ("deploy".to_string(), "Despliega a remoto".to_string()),
                 ("cluster".to_string(), "Gestiona nodos".to_string()),
-                (
-                    "info".to_string(),
-                    "Muestra información del entorno".to_string(),
-                ),
+                ("info".to_string(), "Muestra información del entorno".to_string()),
                 ("i".to_string(), "Alias para info".to_string()),
                 ("scan".to_string(), "Busca módulos WASM".to_string()),
                 ("s".to_string(), "Alias para scan".to_string()),
@@ -34,16 +31,10 @@ impl QyvolCompleter {
                 ("cls".to_string(), "Alias para clear".to_string()),
                 ("cd".to_string(), "Cambia el directorio actual".to_string()),
                 ("d".to_string(), "Alias para cd".to_string()),
-                (
-                    "z".to_string(),
-                    "Navega rápidamente a directorios".to_string(),
-                ),
+                ("z".to_string(), "Navega rápidamente a directorios".to_string()),
                 ("mkdir".to_string(), "Crea un directorio".to_string()),
                 ("m".to_string(), "Alias para mkdir".to_string()),
-                (
-                    "rm".to_string(),
-                    "Elimina un archivo o directorio".to_string(),
-                ),
+                ("rm".to_string(), "Elimina un archivo o directorio".to_string()),
                 ("x".to_string(), "Alias para rm".to_string()),
                 ("edit".to_string(), "Edita un archivo".to_string()),
                 ("e".to_string(), "Alias para edit".to_string()),
@@ -60,10 +51,7 @@ impl QyvolCompleter {
                 let relative = file.strip_prefix(&context.current_dir).unwrap_or(&file);
                 let display = relative.to_string_lossy().to_string();
                 let replacement = display.clone();
-                completions.push(Pair {
-                    display,
-                    replacement,
-                });
+                completions.push(Pair { display, replacement });
             }
         }
         completions

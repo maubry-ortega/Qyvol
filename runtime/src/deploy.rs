@@ -6,16 +6,12 @@ use std::path::Path;
 use tokio::runtime::Runtime;
 
 pub fn deploy_wasm(
-    manifest: &Manifest,
-    manifest_dir: &Path,
-    target: &str,
+    manifest: &Manifest, manifest_dir: &Path, target: &str,
 ) -> Result<(), ExecutorError> {
     let entrypoint_path = manifest_dir.join(&manifest.entrypoint);
 
     if !entrypoint_path.exists() {
-        return Err(ExecutorError::WasmNotFound(
-            entrypoint_path.display().to_string(),
-        ));
+        return Err(ExecutorError::WasmNotFound(entrypoint_path.display().to_string()));
     }
 
     let rt = Runtime::new().map_err(|e| ExecutorError::DeployError(e.to_string()))?;

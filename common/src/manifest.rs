@@ -57,11 +57,8 @@ permissions:
   exec: false
 "#;
         let manifest: Manifest = serde_yaml::from_str(yaml).unwrap();
-        let expected_permissions = Permissions {
-            fs: Some("none".to_string()),
-            net: false,
-            exec: false,
-        };
+        let expected_permissions =
+            Permissions { fs: Some("none".to_string()), net: false, exec: false };
         assert_eq!(manifest.permissions, Some(expected_permissions));
     }
 }

@@ -40,10 +40,7 @@ pub fn execute_info(context: &ShellContext) -> Result<(), Box<dyn Error>> {
             ),
             (
                 "Tamaño total",
-                &context
-                    .project_stats
-                    .as_ref()
-                    .map_or("0B".to_string(), |s| s.format_size()),
+                &context.project_stats.as_ref().map_or("0B".to_string(), |s| s.format_size()),
             ),
             ("Memoria WASM", "12.4MB disponible"),
             ("Red", "Habilitada"),

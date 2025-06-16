@@ -1,0 +1,10 @@
+[advisories]
+# Fail the build on unmaintained crates unless we explicitly ignore them
+unmaintained = "deny"
+
+[advisories.ignore]
+# paste unmaintained (RUSTSEC-2024-0436)
+RUSTSEC-2024-0436 = "Depende de Wasmtime; solo proc‑macro de build time"
+
+# windows-link yanked
+yanked = ["windows-link"]

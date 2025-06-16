@@ -13,10 +13,7 @@ pub fn execute_template(args: &[&str], context: &ShellContext) -> Result<(), Box
     let project_name = args[1];
     let project_path = context.current_dir.join(project_name);
 
-    print_step(&format!(
-        "Creando proyecto {} en {}...",
-        language, project_name
-    ));
+    print_step(&format!("Creando proyecto {} en {}...", language, project_name));
 
     create_dir_all(&project_path)?;
 

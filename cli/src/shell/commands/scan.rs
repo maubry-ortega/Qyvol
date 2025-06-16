@@ -17,12 +17,9 @@ pub fn execute_scan(context: &ShellContext) -> Result<(), Box<dyn Error>> {
         let is_last = i == qyv_files.len() - 1;
         let parent = qyv_file.parent().unwrap_or_else(|| Path::new(""));
         let name = qyv_file.file_name().unwrap().to_string_lossy();
-        let level = qyv_file
-            .strip_prefix(&context.current_dir)
-            .unwrap_or(qyv_file)
-            .components()
-            .count()
-            - 1;
+        let level =
+            qyv_file.strip_prefix(&context.current_dir).unwrap_or(qyv_file).components().count()
+                - 1;
 
         let has_wasm = wasm_paths.iter().any(|w| {
             w.starts_with(parent)

@@ -10,11 +10,8 @@ pub fn execute_cd(args: &[&str], context: &mut ShellContext) -> Result<(), Box<d
         return Err("Uso: cd <directorio>".into());
     }
     let path = Path::new(args[0]);
-    let new_dir = if path.is_absolute() {
-        path.to_path_buf()
-    } else {
-        context.current_dir.join(path)
-    };
+    let new_dir =
+        if path.is_absolute() { path.to_path_buf() } else { context.current_dir.join(path) };
     if new_dir.is_dir() {
         std::env::set_current_dir(&new_dir)?;
         context.update()?;
@@ -45,7 +42,7 @@ pub fn execute_z(args: &[&str], context: &mut ShellContext) -> Result<(), Box<dy
             let entry = entry?;
             let name = entry.file_name().to_string_lossy().to_lowercase();
             if name.contains(&pattern) && entry.path().is_dir() {
-                std::env::set_current_dir(&entry.path())?;
+                std::env::set_current_dir(entry.path())?;
                 context.update()?;
                 return Ok(());
             }

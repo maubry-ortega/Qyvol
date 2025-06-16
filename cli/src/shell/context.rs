@@ -130,9 +130,7 @@ pub fn find_wasm_files(dir: &Path) -> Result<Vec<PathBuf>, Box<dyn Error>> {
 }
 
 fn find_files_recursive<F>(
-    dir: &Path,
-    files: &mut Vec<PathBuf>,
-    predicate: F,
+    dir: &Path, files: &mut Vec<PathBuf>, predicate: F,
 ) -> Result<(), Box<dyn Error>>
 where
     F: Fn(&Path) -> bool + Copy,
@@ -168,9 +166,7 @@ fn count_go_projects(dir: &Path) -> Result<usize, Box<dyn Error>> {
 }
 
 fn count_projects_recursive<F>(
-    dir: &Path,
-    count: &mut usize,
-    predicate: F,
+    dir: &Path, count: &mut usize, predicate: F,
 ) -> Result<(), Box<dyn Error>>
 where
     F: Fn(&Path) -> bool + Copy,
