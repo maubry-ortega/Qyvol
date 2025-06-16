@@ -1,15 +1,16 @@
+// cli/src/main.rs
 // # VolleyDevByMaubry [1/∞] "Una línea de comando puede ser el filo de una revolución."
 use clap::Parser;
 use colored::*;
-use std::path::Path;
-use runtime::run_wasm;
-use runtime::deploy::{self, deploy_wasm};
 use common::Manifest;
+use runtime::deploy::deploy_wasm;
+use runtime::run_wasm;
+use std::path::Path;
 use thiserror::Error;
 mod shell;
-use self::shell::start_shell;
-use runtime::cluster::manage_cluster;
 use anyhow::Result;
+use runtime::cluster::manage_cluster;
+use shell::start_shell;
 
 #[derive(Error, Debug)]
 pub enum CliError {
@@ -37,21 +38,27 @@ pub struct Cli {
 
 #[derive(clap::Subcommand)]
 enum Commands {
-    Run { path: String },
-    Deploy { path: String, target: Option<String> },
+    Run {
+        path: String,
+    },
+    Deploy {
+        path: String,
+        target: Option<String>,
+    },
     Shell,
-    Cluster { action: String, node: Option<String> },
+    Cluster {
+        action: String,
+        node: Option<String>,
+    },
 }
 
-// Función síncrona normal, sin `async`.
 pub fn main_with_cli(cli: Cli) -> Result<(), CliError> {
     match cli.command {
         Commands::Run { path } => {
             println!("{}", "▶ Ejecutando Qyvol Runtime...".green());
             let (manifest, manifest_dir) = Manifest::from_file(Path::new(&path))
                 .map_err(|e| CliError::ManifestError(e.to_string()))?;
-            
-            // Llama a la versión síncrona de `run_wasm`, sin `.await`.
+
             run_wasm(&manifest, &manifest_dir, &cli.format)
                 .map_err(|e| CliError::ExecutorError(e.to_string()))?;
         }
@@ -61,7 +68,6 @@ pub fn main_with_cli(cli: Cli) -> Result<(), CliError> {
                 .map_err(|e| CliError::ManifestError(e.to_string()))?;
             let target = target.unwrap_or_else(|| "http://localhost:8080".to_string());
 
-            // deploy_wasm debe ser síncrona también.
             deploy_wasm(&manifest, &manifest_dir, &target)
                 .map_err(|e| CliError::DeployError(e.to_string()))?;
         }
@@ -77,7 +83,6 @@ pub fn main_with_cli(cli: Cli) -> Result<(), CliError> {
     Ok(())
 }
 
-// Función `main` síncrona, sin macros de Tokio.
 fn main() -> Result<()> {
     let cli = Cli::parse();
     main_with_cli(cli)?;

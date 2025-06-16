@@ -1,8 +1,8 @@
 // # VolleyDevByMaubry [7/∞] "Imprimir módulos es revelar el alma oculta del código."
 use serde::{Deserialize, Serialize};
 use serde_yaml;
+use wasmtime::component::Component;
 use wasmtime::Module;
-use wasmtime::component::Component; // <-- Añadir importación de Component
 
 #[derive(Serialize, Deserialize)]
 pub struct ModuleInfo {
@@ -36,8 +36,10 @@ pub fn print_module_info(module: &Module, fmt: &str) -> Result<(), Box<dyn std::
     Ok(())
 }
 
-// ---- FUNCIÓN NUEVA Y CORREGIDA ----
-pub fn print_component_info(component: &Component, fmt: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub fn print_component_info(
+    component: &Component,
+    fmt: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     println!("\nℹ️  Información del Componente:");
 
     let exports: Vec<String> = component

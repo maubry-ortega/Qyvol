@@ -7,6 +7,10 @@ pub struct State {
 }
 
 impl WasiView for State {
-    fn table(&mut self) -> &mut Table { &mut self.table }
-    fn ctx(&mut self) -> &mut WasiCtx { &mut self.wasi }
+    fn table(&mut self) -> &mut Table {
+        &mut self.table
+    }
+    fn ctx(&mut self) -> &mut WasiCtx {
+        &mut self.wasi
+    }
 }

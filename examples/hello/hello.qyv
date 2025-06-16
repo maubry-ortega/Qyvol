@@ -1,5 +1,5 @@
 name: hello-qyvol
-entrypoint: hello.component.wasm
+entrypoint: hello.wasm
 runtime: wasi
 permissions:
   fs: none
