@@ -1,0 +1,7 @@
+name: null-fs
+entrypoint: null.wasm
+runtime: wasi
+permissions:
+  fs: null
+  net: true
+  exec: false
