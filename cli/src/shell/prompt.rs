@@ -39,7 +39,7 @@ impl QyvolPrompt {
 
         if self.show_git {
             if let Some(branch) = &context.git_branch {
-                parts.push(format!("({})", branch).bright_magenta().to_string());
+                parts.push(format!("({branch})").bright_magenta().to_string());
             }
         }
 

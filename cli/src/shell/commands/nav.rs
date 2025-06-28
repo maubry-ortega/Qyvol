@@ -48,7 +48,7 @@ pub fn execute_z(args: &[&str], context: &mut ShellContext) -> Result<(), Box<dy
             }
         }
     }
-    Err(format!("No se encontró un directorio que coincida con: {}", pattern).into())
+    Err(format!("No se encontró un directorio que coincida con: {pattern}").into())
 }
 
 pub fn execute_mkdir(args: &[&str], context: &mut ShellContext) -> Result<(), Box<dyn Error>> {

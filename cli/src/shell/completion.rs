@@ -75,7 +75,7 @@ impl Completer for QyvolCompleter {
             for (cmd, desc) in &self.commands {
                 if cmd.starts_with(line) {
                     completions.push(Pair {
-                        display: format!("{} - {}", cmd, desc),
+                        display: format!("{cmd} - {desc}"),
                         replacement: cmd.clone(),
                     });
                 }

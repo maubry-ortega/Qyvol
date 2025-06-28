@@ -13,7 +13,7 @@ pub fn execute_template(args: &[&str], context: &ShellContext) -> Result<(), Box
     let project_name = args[1];
     let project_path = context.current_dir.join(project_name);
 
-    print_step(&format!("Creando proyecto {} en {}...", language, project_name));
+    print_step(&format!("Creando proyecto {language} en {project_name}..."));
 
     create_dir_all(&project_path)?;
 
@@ -32,19 +32,17 @@ fn main() {
 
             let cargo_toml = format!(
                 r#"[package]
-name = "{}"
+name = "{project_name}"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-"#,
-                project_name
-            );
+"#);
             write(project_path.join("Cargo.toml"), cargo_toml)?;
 
             let qyv = format!(
-                r#"name: {}
-entrypoint: {}.component.wasm
+                r#"name: {project_name}
+entrypoint: {project_name}.component.wasm
 runtime: wasi
 language: rust
 permissions:
@@ -53,12 +51,10 @@ permissions:
   exec: false
 fs:
   type: memfs
-"#,
-                project_name, project_name
-            );
+"#);
             write(project_path.join(format!("{}.qyv", project_name)), qyv)?;
 
-            let readme = format!("# {}\n\nProyecto Qyvol generado en Rust.", project_name);
+            let readme = format!("# {project_name}\n\nProyecto Qyvol generado en Rust.");
             write(project_path.join("README.md"), readme)?;
         }
         "go" => {
@@ -77,17 +73,15 @@ func main() {
             write(&src_path, main_go)?;
 
             let go_mod = format!(
-                r#"module {}
+                r#"module {project_name}
 
 go 1.21
-"#,
-                project_name
-            );
+"#);
             write(project_path.join("go.mod"), go_mod)?;
 
             let qyv = format!(
-                r#"name: {}
-entrypoint: {}.component.wasm
+                r#"name: {project_name}
+entrypoint: {project_name}.component.wasm
 runtime: wasi
 language: go
 permissions:
@@ -96,20 +90,17 @@ permissions:
   exec: false
 fs:
   type: memfs
-"#,
-                project_name, project_name
-            );
-            write(project_path.join(format!("{}.qyv", project_name)), qyv)?;
+"#);
+            write(project_path.join(format!("{project_name}.qyv")), qyv)?;
 
-            let readme = format!("# {}\n\nProyecto Qyvol generado en Go.", project_name);
+            let readme = format!("# {project_name}\n\nProyecto Qyvol generado en Go.");
             write(project_path.join("README.md"), readme)?;
         }
-        _ => return Err(format!("Lenguaje no soportado: {}", language).into()),
+        _ => return Err(format!("Lenguaje no soportado: {language}").into()),
     }
 
     print_success(&format!(
-        "Proyecto creado! Usa 'cd {} && qyv run {}.qyv'",
-        project_name, project_name
+        "Proyecto creado! Usa 'cd {project_name} && qyv run {project_name}.qyv'"
     ));
     Ok(())
 }
