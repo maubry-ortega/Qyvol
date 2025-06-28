@@ -7,42 +7,72 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  fmt:
+    name: Format Check
     runs-on: ubuntu-latest
-
     steps:
-    - name: Clonar repositorio
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Check code format
+        run: cargo fmt --check
 
-    - name: Instalar Rust estable
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        override: true
+  clippy:
+    name: Lint Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Run Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
 
-    - name: Cache de dependencias
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cargo/registry
-          ~/.cargo/git
-          target
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-cargo-
+  build:
+    name: Build Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Compile project
+        run: cargo check --all-targets
 
-    - name: Verificar que compile
-      run: cargo check --workspace --all-targets
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Run tests
+        run: cargo test --all
 
-    - name: Formato del código
-      run: cargo fmt --check
-
-    - name: Linter Clippy
-      run: cargo clippy --workspace --all-targets --all-features -- -D warnings
-
-    - name: Ejecutar pruebas
-      run: cargo test --workspace --all-targets --all-features
-
-    - name: Auditoría de seguridad
-      run: cargo install cargo-audit && cargo audit
-
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install cargo-audit
+        run: cargo install cargo-audit
+      - name: Run audit
+        run: cargo audit
+    
+    coverage:
+      name: Code Coverage
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions-rs/toolchain@v1
+          with:
+            toolchain: stable
+        - name: Install tarpaulin
+          run: cargo install cargo-tarpaulin
+        - name: Run coverage
+          run: cargo tarpaulin --out Xml
