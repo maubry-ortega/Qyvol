@@ -22,11 +22,11 @@ pub fn print_module_info(module: &Module, fmt: &str) -> Result<(), Box<dyn std::
         _ => {
             println!("📋 Importaciones del módulo:");
             for i in &info.imports {
-                println!("  - {}", i);
+                println!("  - {i}");
             }
             println!("📋 Exportaciones del módulo:");
             for e in &info.exports {
-                println!("  - {}", e);
+                println!("  - {e}");
             }
         }
     }
@@ -55,7 +55,7 @@ pub fn print_component_info(
                 println!("  - (Ninguna)");
             } else {
                 for e in &exports {
-                    println!("  - {}", e);
+                    println!("  - {e}");
                 }
             }
         }
