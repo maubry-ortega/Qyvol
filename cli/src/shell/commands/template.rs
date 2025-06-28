@@ -37,7 +37,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-"#);
+"#
+            );
             write(project_path.join("Cargo.toml"), cargo_toml)?;
 
             let qyv = format!(
@@ -51,7 +52,8 @@ permissions:
   exec: false
 fs:
   type: memfs
-"#);
+"#
+            );
             write(project_path.join(format!("{}.qyv", project_name)), qyv)?;
 
             let readme = format!("# {project_name}\n\nProyecto Qyvol generado en Rust.");
@@ -76,7 +78,8 @@ func main() {
                 r#"module {project_name}
 
 go 1.21
-"#);
+"#
+            );
             write(project_path.join("go.mod"), go_mod)?;
 
             let qyv = format!(
@@ -90,7 +93,8 @@ permissions:
   exec: false
 fs:
   type: memfs
-"#);
+"#
+            );
             write(project_path.join(format!("{project_name}.qyv")), qyv)?;
 
             let readme = format!("# {project_name}\n\nProyecto Qyvol generado en Go.");
