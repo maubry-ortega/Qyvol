@@ -1,3 +1,5 @@
+![CI Status](https://github.com/maubry-ortega/Qyvol/actions/workflows/rust-ci.yml/badge.svg)
+
 # Qyvol 🚀
 
 <div align="center">
