@@ -1,10 +1,11 @@
+
 name: Rust CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   fmt:
@@ -63,16 +64,27 @@ jobs:
         run: cargo install cargo-audit
       - name: Run audit
         run: cargo audit
-    
-    coverage:
-      name: Code Coverage
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - uses: actions-rs/toolchain@v1
-          with:
-            toolchain: stable
-        - name: Install tarpaulin
-          run: cargo install cargo-tarpaulin
-        - name: Run coverage
-          run: cargo tarpaulin --out Xml
+
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Install tarpaulin
+        run: cargo install cargo-tarpaulin
+
+      - name: Run coverage (XML + HTML)
+        run: cargo tarpaulin --out Xml --out Html
+
+      - name: Upload coverage report (HTML)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: tarpaulin-report.html
