@@ -99,7 +99,7 @@ impl QyvolShell {
                     }
 
                     if let Err(e) = self.handle_command(line) {
-                        print_error(&format!("Error: {}", e));
+                        print_error(&format!("Error: {e}"));
                     }
                 }
                 Err(rustyline::error::ReadlineError::Interrupted)

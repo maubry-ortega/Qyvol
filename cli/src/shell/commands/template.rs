@@ -54,7 +54,7 @@ fs:
   type: memfs
 "#
             );
-            write(project_path.join(format!("{}.qyv", project_name)), qyv)?;
+            write(project_path.join(format!("{project_name}.qyv")), qyv)?;
 
             let readme = format!("# {project_name}\n\nProyecto Qyvol generado en Rust.");
             write(project_path.join("README.md"), readme)?;
