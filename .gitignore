@@ -16,7 +16,6 @@ Cargo.lock
 # ----------------------------------------
 # 🧪 Archivos de pruebas temporales
 # ----------------------------------------
-**/*.wasm
 *.log
 *.tmp
 *.swp
@@ -40,6 +39,8 @@ ehthumbs.db
 *.qyv.d.ts
 *.qyv.js
 *.qyv.map
+**/*.wasm
+**/*.wat
 
 # ----------------------------------------
 # 🧪 Archivos del sistema de ejecución (si usas logs o dumps)

@@ -30,7 +30,7 @@ cargo install --path . --bin qyv
 ### Ejecutar un ejemplo (Rust)
 
 ```sh
-qyv run ejemplos_funcionales/hello/hello.qyv
+qyv run examples/hello/hello.qyv
 ```
 
 ### Ejecutar un ejemplo (Go)
