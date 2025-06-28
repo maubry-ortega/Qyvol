@@ -108,7 +108,7 @@ impl QyvolShell {
                     break;
                 }
                 Err(e) => {
-                    print_error(&format!("Error de entrada: {}", e));
+                    print_error(&format!("Error de entrada: {e}"));
                     break;
                 }
             }

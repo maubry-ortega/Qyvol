@@ -31,7 +31,7 @@ pub fn execute_scan(context: &ShellContext) -> Result<(), Box<dyn Error>> {
             format!("⚠️ {} (sin WASM compilado)", context.get_project_name())
         };
 
-        tree.add_item(&format!("{} {}", name, status), false, level, is_last);
+        tree.add_item(&format!("{name} {status}"), false, level, is_last);
     }
 
     tree.print();

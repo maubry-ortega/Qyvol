@@ -33,7 +33,7 @@ impl CommandHandler {
             "mkdir" | "m" => nav::execute_mkdir(args, context),
             "rm" | "x" => nav::execute_rm(args, context),
             "edit" | "e" => nav::execute_edit(args, context),
-            _ => Err(format!("Comando desconocido: {}", command).into()),
+            _ => Err(format!("Comando desconocido: {command}").into()),
         }
     }
 }
@@ -58,7 +58,7 @@ fn execute_run(args: &[&str], context: &ShellContext) -> Result<(), Box<dyn Erro
         possible_paths
             .into_iter()
             .find(|p| p.exists())
-            .ok_or_else(|| format!("Archivo no encontrado: {}", input_path))?
+            .ok_or_else(|| format!("Archivo no encontrado: {input_path}"))?
     };
 
     let (manifest, manifest_dir) = Manifest::from_file(&path)?;
@@ -98,7 +98,7 @@ fn execute_ls(context: &ShellContext) -> Result<(), Box<dyn Error>> {
         let size = if metadata.is_file() {
             let bytes = metadata.len();
             if bytes < 1024 {
-                format!("{}B", bytes)
+                format!("{bytes}B")
             } else if bytes < 1024 * 1024 {
                 format!("{:.1}KB", bytes as f64 / 1024.0)
             } else {

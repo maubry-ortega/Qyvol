@@ -23,7 +23,7 @@ pub fn deploy_wasm(
         println!("🚀 Desplegando {} a {}", manifest.name, target);
 
         client
-            .post(format!("{}/upload", target))
+            .post(format!("{target}/upload"))
             .body(bytes)
             .send()
             .await
@@ -32,6 +32,6 @@ pub fn deploy_wasm(
         Ok::<(), ExecutorError>(())
     })?;
 
-    println!("✅ Despliegue completado a {}", target);
+    println!("✅ Despliegue completado a {target}");
     Ok(())
 }

@@ -13,7 +13,7 @@ pub fn manage_cluster(action: &str, node: Option<String>) -> Result<(), ClusterE
     match action {
         "add-node" => {
             let node = node.ok_or(ClusterError::NodeRequired)?;
-            println!("Añadiendo nodo: {}", node);
+            println!("Añadiendo nodo: {node}");
             Ok(())
         }
         _ => Err(ClusterError::InvalidAction(action.to_string())),
