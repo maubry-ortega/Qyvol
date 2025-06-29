@@ -20,7 +20,7 @@ anyhow = "1.0"
 indicatif = "0.17"
 clap = { version = "4", features = ["derive"] }
 colored = "2"
-rustyline = "14.0"
+rustyline = "16.0"
 ring = "0.17"
 time = "0.3.41"
 rand = "0.8.5"
