@@ -19,7 +19,7 @@ thiserror = { version = "=1.0.69" }
 anyhow = "1.0"
 indicatif = "0.17"
 clap = { version = "4", features = ["derive"] }
-colored = "2"
+colored = "3"
 rustyline = "14.0"
 ring = "0.17"
 time = "0.3.41"
