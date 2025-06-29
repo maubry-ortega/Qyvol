@@ -5,26 +5,25 @@ edition = "2024"
 license = "MIT"
 
 [dependencies]
-clap = { version = "4", features = ["derive"] }
-serde = { version = "1.0", features = ["derive"] }
-serde_yaml = "0.9"
-colored = "2"
+clap = { workspace = true }
+serde = { workspace = true }
+serde_yaml = { workspace = true }
+colored = { workspace = true }
 runtime = { workspace = true }
 common = { workspace = true }
-# qyvol-core = { workspace = true }
-rustyline = "14.0"
-thiserror = "1.0"
-anyhow = "1.0"
-tokio = { version = "1.45", features = ["full"] }
-indicatif = "0.17"
-reqwest = { version = "0.11", features = ["blocking"] }
-ring = "0.17"
-time = "0.3.41"
-strip-ansi-escapes = "0.2"
+rustyline = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+tokio = { workspace = true }
+indicatif = { workspace = true }
+reqwest = { workspace = true }
+ring = { workspace = true }
+time = { workspace = true }
+strip-ansi-escapes = { workspace = true }
 
 [dev-dependencies]
-assert_cmd = "2.0"
-predicates = "3.1.3"
+assert_cmd = { workspace = true }
+predicates = { workspace = true }
 
 [[bin]]
 name = "qyv"
