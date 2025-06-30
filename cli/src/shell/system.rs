@@ -1,5 +1,5 @@
 // # VolleyDevByMaubry [39/∞] "El sistema revela su estado real, sin máscaras."
-use sysinfo::{System, Disks, Networks};
+use sysinfo::{Disks, Networks, System};
 
 pub struct SystemInfo {
     pub total_memory: u64,
@@ -38,10 +38,7 @@ impl SystemInfo {
             .iter()
             .map(|d| d.name().to_string_lossy().to_string())
             .collect();
-        let networks = Networks::new_with_refreshed_list()
-            .iter()
-            .map(|(n, _)| n.clone())
-            .collect();
+        let networks = Networks::new_with_refreshed_list().iter().map(|(n, _)| n.clone()).collect();
 
         SystemInfo {
             total_memory,
@@ -57,4 +54,4 @@ impl SystemInfo {
             networks,
         }
     }
-} 
+}

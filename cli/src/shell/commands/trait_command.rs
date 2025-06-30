@@ -2,7 +2,11 @@
 #[allow(dead_code)]
 pub trait Command {
     fn name(&self) -> &'static str;
-    fn aliases(&self) -> &[&'static str] { &[] }
+    fn aliases(&self) -> &[&'static str] {
+        &[]
+    }
     fn description(&self) -> &'static str;
-    fn execute(&self, args: &[&str], context: &mut crate::shell::context::ShellContext) -> Result<(), Box<dyn std::error::Error>>;
-} 
+    fn execute(
+        &self, args: &[&str], context: &mut crate::shell::context::ShellContext,
+    ) -> Result<(), Box<dyn std::error::Error>>;
+}

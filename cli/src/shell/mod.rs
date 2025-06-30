@@ -3,9 +3,9 @@ pub mod commands;
 pub mod completion;
 pub mod context;
 pub mod prompt;
-pub mod ui;
 pub mod registry;
 pub mod system;
+pub mod ui;
 
 use crate::shell::commands::CommandHandler;
 use crate::shell::completion::QyvolCompleter;

@@ -1,6 +1,6 @@
 // # VolleyDevByMaubry [38/∞] "El registro de comandos es el corazón extensible de la shell."
-use std::collections::HashMap;
 use crate::shell::commands::trait_command::Command;
+use std::collections::HashMap;
 
 #[allow(dead_code)]
 pub struct CommandRegistry {
@@ -27,11 +27,13 @@ impl CommandRegistry {
         self.commands.get(name).map(|b| b.as_ref())
     }
 
-    pub fn execute(&self, name: &str, args: &[&str], context: &mut crate::shell::context::ShellContext) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn execute(
+        &self, name: &str, args: &[&str], context: &mut crate::shell::context::ShellContext,
+    ) -> Result<(), Box<dyn std::error::Error>> {
         if let Some(cmd) = self.get(name) {
             cmd.execute(args, context)
         } else {
             Err(format!("Comando desconocido: {}", name).into())
         }
     }
-} 
+}
