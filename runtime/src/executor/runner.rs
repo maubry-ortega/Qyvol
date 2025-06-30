@@ -3,7 +3,7 @@ use crate::executor::engine::MyState;
 use anyhow::Result;
 use wasmtime::Store;
 use wasmtime::component::{Component, Linker};
-use wasmtime_wasi::bindings::sync::Command;
+use wasmtime_wasi::p2::bindings::sync::Command;
 
 pub fn run_component(
     store: &mut Store<MyState>, linker: &Linker<MyState>, component_bytes: &[u8],
@@ -14,8 +14,9 @@ pub fn run_component(
 
     let result = command.wasi_cli_run().call_run(store)?;
 
-    match result {
-        Ok(()) => Ok(()),
-        Err(()) => anyhow::bail!("El componente WASM finalizó con un error."),
+    if let Err(()) = result {
+        anyhow::bail!("El componente terminó con un código de salida de error.");
     }
+
+    Ok(())
 }
