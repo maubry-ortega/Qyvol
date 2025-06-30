@@ -72,6 +72,7 @@ impl ShellContext {
         }
     }
 
+    #[allow(dead_code)]
     pub fn with_dir<P: AsRef<Path>>(dir: P) -> Result<Self, Box<dyn Error>> {
         let current_dir = dir.as_ref().to_path_buf();
         let project_type = detect_project_type(&current_dir)?;
