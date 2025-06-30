@@ -21,6 +21,8 @@ ring = { workspace = true }
 time = { workspace = true }
 strip-ansi-escapes = { workspace = true }
 sysinfo = { version = "0.35.2", features = ["multithread"] }
+chrono = "0.4"
+rlua = "0.20.1"
 
 [dev-dependencies]
 assert_cmd = { workspace = true }

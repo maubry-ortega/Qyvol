@@ -37,54 +37,95 @@ impl SimpleTable {
     pub fn new(headers: Vec<&str>) -> Self {
         let headers: Vec<String> = headers.iter().map(|s| s.to_string()).collect();
         let column_widths = headers.iter().map(|h| h.len()).collect();
-
         SimpleTable { headers, rows: Vec::new(), column_widths }
     }
 
     pub fn add_row(&mut self, row: Vec<&str>) {
         let row: Vec<String> = row.iter().map(|s| s.to_string()).collect();
-
         for (i, cell) in row.iter().enumerate() {
             if i < self.column_widths.len() {
-                self.column_widths[i] = self.column_widths[i].max(cell.len());
+                self.column_widths[i] = self.column_widths[i].max(cell.chars().count());
             }
         }
-
         self.rows.push(row);
     }
 
     pub fn print(&self) {
-        if self.headers.is_empty() {
-            return;
+        if self.headers.is_empty() { return; }
+        let n = self.headers.len();
+        // Bordes superiores
+        print!("╔");
+        for i in 0..n {
+            print!("{}", "═".repeat(self.column_widths[i] + 2));
+            if i < n - 1 { print!("╦"); } else { println!("╗"); }
         }
-
-        for (i, header) in self.headers.iter().enumerate() {
-            print!("{:<width$}", header.bright_white().bold(), width = self.column_widths[i]);
-            if i < self.headers.len() - 1 {
-                print!("  ");
-            }
-        }
-        println!();
-
-        for (i, &width) in self.column_widths.iter().enumerate() {
-            print!("{}", "─".repeat(width).bright_black());
-            if i < self.column_widths.len() - 1 {
-                print!("  ");
-            }
+        // Encabezados
+        print!("║");
+        for i in 0..n {
+            let h = &self.headers[i];
+            print!(" {:<width$} ║", h.bright_white().bold(), width = self.column_widths[i]);
         }
         println!();
-
+        // Separador
+        print!("╠");
+        for i in 0..n {
+            print!("{}", "═".repeat(self.column_widths[i] + 2));
+            if i < n - 1 { print!("╬"); } else { println!("╣"); }
+        }
+        // Filas
         for row in &self.rows {
-            for (i, cell) in row.iter().enumerate() {
-                if i < self.column_widths.len() {
-                    print!("{:<width$}", cell, width = self.column_widths[i]);
-                    if i < row.len() - 1 {
-                        print!("  ");
-                    }
-                }
+            print!("║");
+            for (i, cell) in row.iter().enumerate().take(n) {
+                print!(" {:<width$} ║", cell, width = self.column_widths[i]);
             }
             println!();
         }
+        // Borde inferior
+        print!("╚");
+        for i in 0..n {
+            print!("{}", "═".repeat(self.column_widths[i] + 2));
+            if i < n - 1 { print!("╩"); } else { println!("╝"); }
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        if self.headers.is_empty() { return String::new(); }
+        let n = self.headers.len();
+        let mut out = String::new();
+        // Bordes superiores
+        out.push('╔');
+        for i in 0..n {
+            out.push_str(&"═".repeat(self.column_widths[i] + 2));
+            if i < n - 1 { out.push('╦'); } else { out.push('╗'); out.push('\n'); }
+        }
+        // Encabezados
+        out.push('║');
+        for i in 0..n {
+            let h = &self.headers[i];
+            out.push_str(&format!(" {:<width$} ║", h, width = self.column_widths[i]));
+        }
+        out.push('\n');
+        // Separador
+        out.push('╠');
+        for i in 0..n {
+            out.push_str(&"═".repeat(self.column_widths[i] + 2));
+            if i < n - 1 { out.push('╬'); } else { out.push('╣'); out.push('\n'); }
+        }
+        // Filas
+        for row in &self.rows {
+            out.push('║');
+            for (i, cell) in row.iter().enumerate().take(n) {
+                out.push_str(&format!(" {:<width$} ║", cell, width = self.column_widths[i]));
+            }
+            out.push('\n');
+        }
+        // Borde inferior
+        out.push('╚');
+        for i in 0..n {
+            out.push_str(&"═".repeat(self.column_widths[i] + 2));
+            if i < n - 1 { out.push('╩'); } else { out.push('╝'); out.push('\n'); }
+        }
+        out
     }
 }
 

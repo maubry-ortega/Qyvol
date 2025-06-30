@@ -77,79 +77,60 @@ fn execute_run(args: &[&str], context: &ShellContext) -> Result<(), Box<dyn Erro
 fn execute_ls(context: &ShellContext) -> Result<(), Box<dyn Error>> {
     use super::ui::{SimpleTable, print_step};
     use std::fs;
-    use std::time::SystemTime;
+    // use std::time::{SystemTime, UNIX_EPOCH};
+    use chrono::{DateTime, Local};
 
-    print_step("Listando directorio actual...");
+    print_step("Listando directorio actual...\n");
 
-    let mut table = SimpleTable::new(vec!["Tipo", "Nombre", "Tamaño", "Modificado", "Descripción"]);
+    let mut table = SimpleTable::new(vec!["Nombre", "Tamaño", "Fecha", "Tipo"]);
 
-    for entry in fs::read_dir(&context.current_dir)? {
-        let entry = entry?;
+    let mut entries: Vec<_> = fs::read_dir(&context.current_dir)?.collect::<Result<_, _>>()?;
+    entries.sort_by_key(|e| e.file_name());
+
+    for entry in entries {
         let metadata = entry.metadata()?;
         let name = entry.file_name().to_string_lossy().to_string();
-
-        let file_type = if metadata.is_dir() {
-            "📂"
-        } else if name.ends_with(".qyv") {
-            "🦊"
-        } else if name.ends_with(".wasm") {
-            "📦"
-        } else if name.ends_with(".rs") {
-            "🦀"
-        } else if name.ends_with(".go") {
-            "🐹"
-        } else {
-            "📄"
-        };
-
-        let size = if metadata.is_file() {
+        let is_dir = metadata.is_dir();
+        let is_file = metadata.is_file();
+        // Tamaño
+        let size = if is_file {
             let bytes = metadata.len();
             if bytes < 1024 {
-                format!("{bytes}B")
+                format!("{:.0} B", bytes)
             } else if bytes < 1024 * 1024 {
-                format!("{:.1}KB", bytes as f64 / 1024.0)
+                format!("{:.1} KB", bytes as f64 / 1024.0)
             } else {
-                format!("{:.1}MB", bytes as f64 / (1024.0 * 1024.0))
+                format!("{:.1} MB", bytes as f64 / (1024.0 * 1024.0))
             }
-        } else {
-            "-".to_string()
-        };
-
-        let modified = metadata
-            .modified()
-            .map(|t| {
-                let duration = SystemTime::now().duration_since(t).unwrap_or_default().as_secs();
-                if duration < 3600 {
-                    format!("{}m ago", duration / 60)
-                } else if duration < 86400 {
-                    format!("{}h ago", duration / 3600)
-                } else {
-                    format!("{}d ago", duration / 86400)
-                }
+        } else { "—".to_string() };
+        // Fecha
+        let modified = metadata.modified().ok()
+            .map(|mtime| {
+                let dt: DateTime<Local> = DateTime::<Local>::from(mtime);
+                dt.format("%Y-%m-%d %H:%M").to_string()
             })
             .unwrap_or("?".to_string());
-
-        let description = if metadata.is_dir() {
-            "Directorio"
+        // Tipo
+        let (icon, tipo) = if is_dir {
+            ("📂", "Carpeta")
         } else if name.ends_with(".qyv") {
-            "Manifiesto Qyvol"
+            ("🦊", "Manifiesto")
         } else if name.ends_with(".wasm") {
-            "Módulo WASM"
+            ("📦", "WASM")
         } else if name.ends_with(".rs") {
-            "Código Rust"
+            ("🦀", "Rust")
         } else if name.ends_with(".go") {
-            "Código Go"
-        } else if name == "README.md" {
-            "Documentación"
-        } else if name == "Cargo.toml" {
-            "Config Rust"
+            ("🐹", "Go")
+        } else if name.ends_with(".py") {
+            ("🐍", "Python")
+        } else if name == ".env" || name.ends_with(".secret") || name.ends_with(".key") {
+            ("🔒", "Secreto")
         } else {
-            "Archivo"
+            ("📄", "Archivo")
         };
-
-        table.add_row(vec![file_type, &name, &size, &modified, description]);
+        let tipo_str = format!("{} {}", icon, tipo);
+        table.add_row(vec![&name, &size, &modified, &tipo_str]);
     }
-
     table.print();
     Ok(())
 }
@@ -187,4 +168,56 @@ fn execute_help() -> Result<(), Box<dyn Error>> {
 
     print_separator();
     Ok(())
+}
+
+// Exportar función para uso en pipelines
+pub fn mod_rs_ls_to_string(context: &ShellContext) -> Result<String, Box<dyn Error>> {
+    use super::ui::SimpleTable;
+    use std::fs;
+    use chrono::{DateTime, Local};
+    let mut table = SimpleTable::new(vec!["Nombre", "Tamaño", "Fecha", "Tipo"]);
+    let mut entries: Vec<_> = fs::read_dir(&context.current_dir)?.collect::<Result<_, _>>()?;
+    entries.sort_by_key(|e| e.file_name());
+    for entry in entries {
+        let metadata = entry.metadata()?;
+        let name = entry.file_name().to_string_lossy().to_string();
+        let is_dir = metadata.is_dir();
+        let is_file = metadata.is_file();
+        let size = if is_file {
+            let bytes = metadata.len();
+            if bytes < 1024 {
+                format!("{:.0} B", bytes)
+            } else if bytes < 1024 * 1024 {
+                format!("{:.1} KB", bytes as f64 / 1024.0)
+            } else {
+                format!("{:.1} MB", bytes as f64 / (1024.0 * 1024.0))
+            }
+        } else { "—".to_string() };
+        let modified = metadata.modified().ok()
+            .map(|mtime| {
+                let dt: DateTime<Local> = DateTime::<Local>::from(mtime);
+                dt.format("%Y-%m-%d %H:%M").to_string()
+            })
+            .unwrap_or("?".to_string());
+        let (icon, tipo) = if is_dir {
+            ("📂", "Carpeta")
+        } else if name.ends_with(".qyv") {
+            ("🦊", "Manifiesto")
+        } else if name.ends_with(".wasm") {
+            ("📦", "WASM")
+        } else if name.ends_with(".rs") {
+            ("🦀", "Rust")
+        } else if name.ends_with(".go") {
+            ("🐹", "Go")
+        } else if name.ends_with(".py") {
+            ("🐍", "Python")
+        } else if name == ".env" || name.ends_with(".secret") || name.ends_with(".key") {
+            ("🔒", "Secreto")
+        } else {
+            ("📄", "Archivo")
+        };
+        let tipo_str = format!("{} {}", icon, tipo);
+        table.add_row(vec![&name, &size, &modified, &tipo_str]);
+    }
+    Ok(table.to_string())
 }
