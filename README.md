@@ -88,7 +88,7 @@ qyv run mi-aplicacion.qyv
 
 ## 📖 Documentación
 
-- **[Estructura del Proyecto](docs/ESTRUTURA.md)** - Arquitectura y organización
+- **[Estructura del Proyecto](docs/ESTRUCTURA.md)** - Arquitectura y organización
 - **[CLI y Shell](docs/CLI.md)** - Guía completa de comandos
 - **[Runtime WASM](docs/RUNTIME.md)** - Motor de ejecución
 - **[Manifiestos .qyv](docs/MANIFESTOS.md)** - Configuración de módulos
