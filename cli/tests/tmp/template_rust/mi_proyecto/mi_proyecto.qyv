@@ -1,0 +1,10 @@
+name: mi_proyecto
+entrypoint: mi_proyecto.component.wasm
+runtime: wasi
+language: rust
+permissions:
+  fs: none
+  net: false
+  exec: false
+fs:
+  type: memfs
