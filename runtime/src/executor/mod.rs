@@ -11,9 +11,7 @@ use wasmtime::component::Linker;
 use wasmtime::{Engine, Store};
 
 pub fn run_wasm(
-    manifest: &Manifest,
-    manifest_dir: &Path,
-    _format: &str,
+    manifest: &Manifest, manifest_dir: &Path, _format: &str,
 ) -> Result<(), ExecutorError> {
     let engine = Engine::default();
 
@@ -25,8 +23,8 @@ pub fn run_wasm(
     let mut store = Store::new(&engine, state);
 
     let module_path = manifest_dir.join(&manifest.entrypoint);
-    let bytes = std::fs::read(&module_path)
-        .map_err(|e| ExecutorError::ModuleLoad(e.to_string()))?;
+    let bytes =
+        std::fs::read(&module_path).map_err(|e| ExecutorError::ModuleLoad(e.to_string()))?;
 
     let result = runner::run_component(&mut store, &linker, &bytes);
 

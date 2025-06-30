@@ -1,8 +1,8 @@
 // # VolleyDevByMaubry [10/∞] "El estado del motor enciende la maquinaria de la revolución portátil."
 
-use wasmtime_wasi::p2::{IoView, WasiCtx, WasiCtxBuilder, WasiView};
-use wasmtime_wasi::ResourceTable;
 use anyhow::Result;
+use wasmtime_wasi::ResourceTable;
+use wasmtime_wasi::p2::{IoView, WasiCtx, WasiCtxBuilder, WasiView};
 
 pub struct MyState {
     pub wasi_ctx: WasiCtx,
@@ -22,13 +22,7 @@ impl WasiView for MyState {
 }
 
 pub fn build_state() -> Result<MyState> {
-    let wasi_ctx = WasiCtxBuilder::new()
-        .inherit_stdio()
-        .inherit_args()
-        .build();
+    let wasi_ctx = WasiCtxBuilder::new().inherit_stdio().inherit_args().build();
 
-    Ok(MyState {
-        wasi_ctx,
-        table: ResourceTable::new(),
-    })
+    Ok(MyState { wasi_ctx, table: ResourceTable::new() })
 }
