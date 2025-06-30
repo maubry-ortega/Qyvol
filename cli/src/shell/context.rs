@@ -71,6 +71,21 @@ impl ShellContext {
             ProjectType::Generic => "generic",
         }
     }
+
+    #[allow(dead_code)]
+    pub fn with_dir<P: AsRef<Path>>(dir: P) -> Result<Self, Box<dyn Error>> {
+        let current_dir = dir.as_ref().to_path_buf();
+        let project_type = detect_project_type(&current_dir)?;
+        let project_stats = calculate_project_stats(&current_dir)?;
+        let git_branch = detect_git_branch(&current_dir);
+
+        Ok(ShellContext {
+            current_dir,
+            project_type,
+            project_stats: Some(project_stats),
+            git_branch,
+        })
+    }
 }
 
 fn detect_project_type(dir: &Path) -> Result<ProjectType, Box<dyn Error>> {

@@ -8,6 +8,7 @@ exclude = ["hello"]
 common = { path = "common" }
 runtime = { path = "runtime" }
 core = { path = "core" }
+cli = { path = "cli" }
 
 # Comunes en todo el workspace
 serde = { version = "=1.0.219", features = ["derive"] }
@@ -39,3 +40,6 @@ bitflags = { version = "=2.9.1" }
 rustix = { version = "=1.0.7" }
 hashbrown = { version = "=0.15.4" }
 unicode-width = { version = "=0.2.1" }
+tempfile = "3"
+fs_extra = "1"
+pretty_assertions = "1.4.1"

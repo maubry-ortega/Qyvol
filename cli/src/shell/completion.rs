@@ -7,6 +7,12 @@ pub struct QyvolCompleter {
     commands: Vec<(String, String)>,
 }
 
+impl Default for QyvolCompleter {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl QyvolCompleter {
     pub fn new() -> Self {
         QyvolCompleter {

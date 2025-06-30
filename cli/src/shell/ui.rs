@@ -167,6 +167,12 @@ impl FileTree {
     }
 }
 
+impl Default for FileTree {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 pub fn print_help_command(command: &str, description: &str, usage: Option<&str>) {
     println!("  {} {}", command.bright_green().bold(), description);
     if let Some(usage) = usage {

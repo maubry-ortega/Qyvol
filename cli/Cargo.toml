@@ -2,7 +2,6 @@
 name = "cli"
 version = "0.1.0"
 edition = "2024"
-license = "MIT"
 
 [dependencies]
 clap = { workspace = true }
@@ -24,6 +23,9 @@ strip-ansi-escapes = { workspace = true }
 [dev-dependencies]
 assert_cmd = { workspace = true }
 predicates = { workspace = true }
+pretty_assertions = { workspace = true }
+tempfile = { workspace = true }
+fs_extra = { workspace = true }
 
 [[bin]]
 name = "qyv"
