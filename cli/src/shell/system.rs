@@ -38,7 +38,7 @@ impl SystemInfo {
             .iter()
             .map(|d| d.name().to_string_lossy().to_string())
             .collect();
-        let networks = Networks::new_with_refreshed_list().iter().map(|(n, _)| n.clone()).collect();
+        let networks = Networks::new_with_refreshed_list().keys().cloned().collect();
 
         SystemInfo {
             total_memory,

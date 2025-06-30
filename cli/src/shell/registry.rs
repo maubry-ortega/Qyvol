@@ -33,7 +33,7 @@ impl CommandRegistry {
         if let Some(cmd) = self.get(name) {
             cmd.execute(args, context)
         } else {
-            Err(format!("Comando desconocido: {}", name).into())
+            Err(format!("Comando desconocido: {name}").into())
         }
     }
 }
