@@ -9,6 +9,7 @@ pub mod info;
 pub mod nav;
 pub mod scan;
 pub mod template;
+pub mod trait_command;
 
 pub struct CommandHandler;
 

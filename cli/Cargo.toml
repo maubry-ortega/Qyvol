@@ -2,6 +2,7 @@
 name = "cli"
 version = "0.1.0"
 edition = "2024"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 clap = { workspace = true }
@@ -19,6 +20,7 @@ reqwest = { workspace = true }
 ring = { workspace = true }
 time = { workspace = true }
 strip-ansi-escapes = { workspace = true }
+sysinfo = { version = "0.35.2", features = ["multithread"] }
 
 [dev-dependencies]
 assert_cmd = { workspace = true }

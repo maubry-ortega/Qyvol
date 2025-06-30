@@ -3,6 +3,8 @@ pub mod commands;
 pub mod completion;
 pub mod context;
 pub mod prompt;
+pub mod registry;
+pub mod system;
 pub mod ui;
 
 use crate::shell::commands::CommandHandler;
@@ -17,6 +19,10 @@ use rustyline::{
 };
 use std::borrow::Cow;
 use std::error::Error;
+
+pub use crate::shell::commands::trait_command::Command;
+#[allow(unused_imports)]
+pub use crate::shell::registry::CommandRegistry;
 
 struct QyvolHelper {
     completer: QyvolCompleter,
