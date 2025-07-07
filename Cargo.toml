@@ -18,7 +18,7 @@ tokio = { version = "1.45", features = ["full"] }
 reqwest = { version = "0.12.20", features = ["blocking", "json"] }
 thiserror = { version = "=2.0.12" }
 anyhow = "1.0"
-indicatif = "0.17"
+indicatif = "0.18"
 clap = { version = "4", features = ["derive"] }
 colored = "3"
 rustyline = "16.0"
