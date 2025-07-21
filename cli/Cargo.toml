@@ -20,7 +20,7 @@ reqwest = { workspace = true }
 ring = { workspace = true }
 time = { workspace = true }
 strip-ansi-escapes = { workspace = true }
-sysinfo = { version = "0.35.2", features = ["multithread"] }
+sysinfo = { version = "0.36.1", features = ["multithread"] }
 
 [dev-dependencies]
 assert_cmd = { workspace = true }
