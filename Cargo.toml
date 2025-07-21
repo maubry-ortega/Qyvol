@@ -37,7 +37,7 @@ wasmtime-wasi = "34.0.1"
 
 bitflags = { version = "=2.9.1" }
 
-rustix = { version = "=1.0.7" }
+rustix = { version = "=1.0.8" }
 hashbrown = { version = "=0.15.4" }
 unicode-width = { version = "=0.2.1" }
 tempfile = "3"
